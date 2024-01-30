@@ -1,0 +1,20 @@
+
+/*defaults*/
+@keyframes PopupGrowBox {
+  from {
+    scale: 0;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+@keyframes PopupBlurIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+

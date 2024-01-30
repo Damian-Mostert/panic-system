@@ -1,0 +1,61 @@
+.modals {
+  &-form {
+    @apply h-min w-min relative;
+  }
+
+  &-new-menu-tem {
+  }
+}
+
+.image-selector {
+  cursor: pointer;
+  border: 2px solid transparent;
+  position: relative;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &.selected {
+    border-color: var(--11th-copper);
+
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+
+.eventTitleInput::placeholder {
+ color: var(--11th-copper);
+}
+
+.eventTitleInput::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+ color: var(--11th-copper);
+}
+.eventTitleInput::-moz-placeholder { /* Firefox 19+ */
+ color: var(--11th-copper);
+}
+.eventTitleInput:-ms-input-placeholder { /* IE 10+ */
+ color: var(--11th-copper);
+}
+.eventTitleInput:-moz-placeholder { /* Firefox 18- */
+ color: var(--11th-copper);
+}
+
+.eventDateInput {
+  cursor: pointer; 
+  margin-left: 20px;
+}

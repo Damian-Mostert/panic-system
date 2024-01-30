@@ -1,0 +1,29 @@
+@import "./animations";
+
+.popup {
+
+  //background:
+  &-background {
+    &-blur {
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      background-color: #00000090;
+    }
+
+    //default
+    animation: PopupBlurIn 0.5s ease-in;
+    transition: opacity 0.5s;
+  }
+
+  //default styles
+  @apply rounded-2xl bg-[var(--popup-background)] text-[var(--popup-text)] w-max max-w-[400px] p-4 tracking-widest shadow-md;
+  &.popup-no-text {
+    @apply rounded-full;
+  }
+  &-open {
+    width: fit-content;
+    height: fit-content;
+    animation: PopupGrowBox 0.5s ease-in;
+    transition: scale 0.5s;
+  }
+}
