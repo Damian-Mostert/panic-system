@@ -10,3 +10,11 @@ body{
 input{
   @apply focus:outline-none;
 }
+
+.bg-for-table {
+  @apply bg-gray-100 mb-2 rounded-md shadow-xl;
+
+  &:nth-child(2n) {
+    @apply bg-gray-200;
+  }
+}
