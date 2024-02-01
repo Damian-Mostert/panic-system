@@ -1,20 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body{
-  @apply flex justify-center items-center h-screen w-full m-0 p-0;
+body {
+  @apply flex justify-center items-center h-screen w-full m-0 p-0 bg-black;
 }
-:root{
-  --popup-background:#efefef;
+:root {
+  --popup-background: black;
+  --popup-text: yellow;
 }
-input{
+input {
   @apply focus:outline-none;
 }
 
 .bg-for-table {
-  @apply bg-gray-100 mb-2 rounded-md shadow-xl;
+  @apply mb-2 rounded-md shadow-xl;
 
+  background-color: #444;
   &:nth-child(2n) {
-    @apply bg-gray-200;
+    background-color: #333;
   }
 }
