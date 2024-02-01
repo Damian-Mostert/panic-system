@@ -7,7 +7,8 @@
 .variant {
   &_basic {
     transition: 1s all;
-    @apply shadow-md text-white bg-gray-500 hover:text-gray-500 hover:bg-gray-900;
+    background-color: black;
+    @apply shadow-md text-yellow-400 hover:text-black hover:bg-yellow-400;
   }
 }
 //add ons
