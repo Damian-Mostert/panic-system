@@ -14,6 +14,47 @@ export default function PanicHistory({ tab, setTab }) {
         setTab("send");
     };
 
+    const openResolvePanic = (index) => {
+
+        Popup.fire({
+            background: "blur",
+            icon: "warn",
+            text: "Are you sure you want to resolve this panic?",
+            confirmButton: {
+                label: "confirm",
+                variant: "basic"
+            },
+            canClose: true,
+        }).then(res => {
+            if (res.confirmed) {
+                const panicId = tempData[index].id;
+                Popup.fire({
+                    icon: "loading",
+                    background: "blur"
+                });
+                UpdatePanic(panicId, { status: "resolved" }).then(response => {
+                    // Handle the response, update UI, etc.
+
+                    if (response.data.status == "success") {
+                        loadPanics();
+                    } else {
+                        return Popup.fire({
+                            icon: "unapproved",
+                            text: "Failed to resolve panic",
+                            background: "blur",
+                            timer: 5000,
+                            canClose: true
+                        });
+                    }
+                })
+                    .catch(error => {
+                        // Handle errors, log, or show user-friendly messages
+                        console.error("Error during panic cancellation:", error.message);
+                    });
+            }
+        });
+    };
+
     const openCancelPanic = (index) => {
 
         Popup.fire({
@@ -204,7 +245,11 @@ export default function PanicHistory({ tab, setTab }) {
                             </div>
                         </div>
                         {tab != "resolved" && <>
+                            
                             <div className='w-full flex justify-end mt-4'>
+                                {tab != "canceled" && <div className="mr-auto">
+                                    <Button onClick={openResolvePanic} variant='basic' label={"resolve"} />
+                                </div>}
                                 <Button onClick={() => tab == "canceled" ? openUnCancelPanic(key) : openCancelPanic(key)} variant='basic' label={tab == "canceled" ? "uncancel" : "cancel"} />
                             </div>
                         </>}
