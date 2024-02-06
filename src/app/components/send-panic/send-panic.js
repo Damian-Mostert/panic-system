@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { Popup, Button } from "../../../components";
 import { Location, logout ,User} from "../../../modules";
 
-import { SendPanicService } from "./services";
+import { SendPanicService } from "../../../services";
 
 export default function SendPanic({tab,setTab}){
     User();

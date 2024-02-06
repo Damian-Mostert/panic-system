@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { Popup, Button } from "../../../components";
 import { logout, User } from "../../../modules";
 
-
-import axios from "axios";
-import { GetHistory, UpdatePanic } from "./services";
+import { GetHistory, UpdatePanic } from "../../../services";
 
 export default function PanicHistory({ tab, setTab }) {
     User();

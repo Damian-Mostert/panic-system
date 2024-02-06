@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react"
-import { GetUser } from "./services";
+import { GetUser } from "../../services";
 
 export function User(){
 

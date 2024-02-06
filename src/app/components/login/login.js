@@ -1,10 +1,9 @@
 import styles from "./login.module.scss";
 
 import { Popup, Button } from "../../../components";
-import axios from "axios";
 import { User } from "../../../modules";
 import { useEffect } from "react";
-import { LoginService } from "./services";
+import { LoginService } from "../../../services";
 
 export default function Login({ tab, setTab }) {
     const user = User();
