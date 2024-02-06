@@ -32,7 +32,7 @@ export default function PanicHistory({ tab, setTab }) {
                     icon: "loading",
                     background: "blur"
                 });
-                UpdatePanic(panicId, { status: "resolved" }).then(response => {
+                UpdatePanic(panicId, { status: "resolved",canceled:tempData[index].canceled }).then(response => {
                     // Handle the response, update UI, etc.
 
                     if (response.data.status == "success") {
@@ -73,7 +73,7 @@ export default function PanicHistory({ tab, setTab }) {
                     icon: "loading",
                     background: "blur"
                 });
-                UpdatePanic(panicId,{ canceled: true }).then(response => {
+                UpdatePanic(panicId, { canceled: true,status: tempData[index].status }).then(response => {
                         // Handle the response, update UI, etc.
 
                         if (response.data.status == "success") {
@@ -114,7 +114,7 @@ export default function PanicHistory({ tab, setTab }) {
                     background: "blur"
                 });
                 
-                UpdatePanic(panicId, { canceled: false }).then(response => {
+                UpdatePanic(panicId, { canceled: false, status: tempData[index].status }).then(response => {
                     // Handle the response, update UI, etc.
 
                     if (response.data.status == "success") {
