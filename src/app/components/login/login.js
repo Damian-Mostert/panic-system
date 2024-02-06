@@ -45,7 +45,6 @@ export default function Login({ tab, setTab }) {
 
             } else {
 
-                localStorage.setItem("id", res.data.data.id)
                 localStorage.setItem("token", res.data.data.token);
                 setTab("send");
 

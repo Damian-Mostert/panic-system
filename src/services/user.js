@@ -12,13 +12,7 @@ export async function LoginService(email, password) {
 }
 
 export async function GetUser() {
-    const id = localStorage.getItem("id");
-
-    console.log(id);
-
-    return axios.post(process.env.REACT_APP_API_URL + "/api/get-user", {
-        id,
-    }, {
+    return axios.post(process.env.REACT_APP_API_URL + "/api/get-user", {}, {
         headers: {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${localStorage.getItem("token")}`,
