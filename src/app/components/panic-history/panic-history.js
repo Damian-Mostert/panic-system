@@ -248,7 +248,7 @@ export default function PanicHistory({ tab, setTab }) {
                             
                             <div className='w-full flex justify-end mt-4'>
                                 {tab != "canceled" && <div className="mr-auto">
-                                    <Button onClick={openResolvePanic} variant='basic' label={"resolve"} />
+                                    <Button onClick={()=>openResolvePanic(key)} variant='basic' label={"resolve"} />
                                 </div>}
                                 <Button onClick={() => tab == "canceled" ? openUnCancelPanic(key) : openCancelPanic(key)} variant='basic' label={tab == "canceled" ? "uncancel" : "cancel"} />
                             </div>
