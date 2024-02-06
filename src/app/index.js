@@ -8,7 +8,7 @@ import { User } from '../modules';
 export default function App() {
     const user = User();
     const [tab, setTab] = useState("login");
-    return <>
+    return <main>
         <img src="/batman.png" className='fixed bottom-4 right-4 w-[100px] h-auto' />
         {user && <div className='text-yellow-300 w-full flex justify-start'>
             <div className='pl-4 mb-4'>
@@ -33,5 +33,5 @@ export default function App() {
             })()}
         </div>
         <Popup/>
-    </>
+    </main>
 }
