@@ -25,7 +25,7 @@ export default function App() {
                         return <Login tab={tab} setTab={setTab} />
                     case "send":
                         return <SendPanic tab={tab} setTab={setTab} />
-                    case "history": case "canceled":
+                    case "history": case "canceled":case"resolved":
                         return <PanicHistory tab={tab} setTab={setTab} />
                     default:
                         return <></>

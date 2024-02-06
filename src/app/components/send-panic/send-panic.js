@@ -111,6 +111,9 @@ export default function SendPanic({tab,setTab}){
                 <Button label="send" variant='basic' onClick={sendPanic} />
             </div>
             <div className='m-auto'>
+                <Button label="view resolved" variant='basic' onClick={() => setTab("resolved")} />
+            </div>            
+            <div className='m-auto'>
                 <Button label="view canceled" variant='basic' onClick={() => setTab("canceled")} />
             </div>
         </div>

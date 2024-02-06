@@ -9,12 +9,10 @@ export default function PanicHistory({ tab, setTab }) {
 
     const [tempData, setTempData] = useState();
 
-
     const closePanics = () => {
         setTempData(null);
         setTab("send");
     };
-
 
     const openCancelPanic = (index) => {
 
@@ -122,10 +120,14 @@ export default function PanicHistory({ tab, setTab }) {
 
                 let output = [];
                 for (let item of res.data.data) 
-                    tab == "canceled" ? item.canceled && output.push(item) : !item.canceled && output.push(item);
-
+                    tab == "canceled" ? 
+                        item.canceled && item.status == "active" && output.push(item) 
+                    : tab == "resolved" ? 
+                        item.status == "resolved" && output.push(item) 
+                    : //normal
+                    !item.canceled && item.status == "active" && output.push(item);
                 setTempData(output);
-                setTab(tab?"canceled":"history");
+                setTab(tab?tab:"history");
                 Popup.close();
             }
 
@@ -134,7 +136,7 @@ export default function PanicHistory({ tab, setTab }) {
 
     useEffect(() => {
         if (tab == 'history') loadPanics();
-        else loadPanics("canceled");
+        else loadPanics(tab);
     }, []);
 
     return <>
@@ -144,7 +146,7 @@ export default function PanicHistory({ tab, setTab }) {
                     <Button label="back" onClick={closePanics} />
                 </div>
                 <h2 className="text-2xl w-full text-center">
-                    {tab == "canceled" && <>CANCELED</>} PANICS
+                    {tab == "canceled" && <>CANCELED</>} {tab == "resolved" && <>RESOLVED</>} PANICS
                 </h2>
                 <div className="absolute w-min right-0">
                     <Button label="logout" onClick={logout} />
@@ -201,9 +203,11 @@ export default function PanicHistory({ tab, setTab }) {
                                 {item.updated_at}
                             </div>
                         </div>
-                        <div className='w-full flex justify-end mt-4'>
-                            <Button onClick={() => tab == "canceled" ? openUnCancelPanic(key) : openCancelPanic(key)} variant='basic' label={tab == "canceled" ? "uncancel" : "cancel"} />
-                        </div>
+                        {tab != "resolved" && <>
+                            <div className='w-full flex justify-end mt-4'>
+                                <Button onClick={() => tab == "canceled" ? openUnCancelPanic(key) : openCancelPanic(key)} variant='basic' label={tab == "canceled" ? "uncancel" : "cancel"} />
+                            </div>
+                        </>}
                     </div>
                 })}
             </div>
