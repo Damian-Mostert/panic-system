@@ -1,4 +1,4 @@
-import '../styles/index.csss';
+import '../styles/index.css';
 
 import { Popup} from "../components";
 import { Login,SendPanic, PanicHistory} from './components';
