@@ -4,70 +4,19 @@ import { logout, User } from "../../../modules";
 
 
 import axios from "axios";
+import { GetHistory, UpdatePanic } from "./services";
 
 export default function PanicHistory({ tab, setTab }) {
-    const user = User();
+    User();
 
     const [tempData, setTempData] = useState();
 
-    const loadCanceledPanics = () => {
-        Popup.fire({
-            icon: "loading",
-            background: "blur"
-        });
-
-        axios.post(process.env.REACT_APP_API_URL + "/api/panic-history", {}, {
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            }
-        }).then(async res => {
-            if (res.statusText != "OK") {
-                console.error("Error", res)
-                return await Popup.fire({
-                    icon: "warn",
-                    text: "Fetching history failed",
-                    background: "blur",
-                    timer: 5000,
-                    canClose: true
-                });
-            }
-            if (res.data.status == "error") {
-
-                Popup.fire({
-                    icon: "unapproved",
-                    text: res.data.message,
-                    background: "blur",
-                    timer: 5000,
-                    canClose: true
-                });
-
-            } else {
-
-                res.data.data.reverse();
-                setTempData(res.data.data);
-                setTab("canceled");
-                Popup.close();
-            }
-
-
-        }).catch(e => {
-            console.error(e);
-
-            Popup.fire({
-                icon: "unapproved",
-                text: "Could not fetch history",
-                background: "blur",
-                timer: 5000,
-                canClose: true
-            });
-        })
-    };
 
     const closePanics = () => {
         setTempData(null);
         setTab("send");
     };
+
 
     const openCancelPanic = (index) => {
 
@@ -87,13 +36,7 @@ export default function PanicHistory({ tab, setTab }) {
                     icon: "loading",
                     background: "blur"
                 });
-                axios.post(process.env.REACT_APP_API_URL + "/api/update-panic", { id: panicId, canceled: true }, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                    }
-                })
-                    .then(response => {
+                UpdatePanic(panicId,{ canceled: true }).then(response => {
                         // Handle the response, update UI, etc.
 
                         if (response.data.status == "success") {
@@ -133,16 +76,12 @@ export default function PanicHistory({ tab, setTab }) {
                     icon: "loading",
                     background: "blur"
                 });
-                axios.post(process.env.REACT_APP_API_URL + "/api/update-panic", { id: panicId, canceled: false }, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                    }
-                }).then(response => {
+                
+                UpdatePanic(panicId, { canceled: false }).then(response => {
                     // Handle the response, update UI, etc.
 
                     if (response.data.status == "success") {
-                        loadCanceledPanics();
+                        loadPanics("canceled");
                     } else {
                         return Popup.fire({
                             icon: "unapproved",
@@ -161,19 +100,15 @@ export default function PanicHistory({ tab, setTab }) {
         });
     };
 
-    const loadPanics = () => {
+    const loadPanics = (tab) => {
+        console.info("loading panic history...")
         Popup.fire({
             icon: "loading",
             background: "blur"
         });
 
-        axios.post(process.env.REACT_APP_API_URL + "/api/panic-history", {}, {
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            }
-        }).then(res => {
-
+        GetHistory().then(res => {
+            
             if (res.data.status == "error") {
 
                 Popup.fire({
@@ -186,10 +121,14 @@ export default function PanicHistory({ tab, setTab }) {
 
             } else {
                 res.data.data.reverse();
-                setTempData(res.data.data);
-                setTab("history");
-                Popup.close();
 
+                let output = [];
+                for (let item of res.data.data) 
+                    tab == "canceled" ? item.canceled && output.push(item) : !item.canceled && output.push(item);
+
+                setTempData(output);
+                setTab(tab?"canceled":"history");
+                Popup.close();
             }
 
         })
@@ -197,7 +136,7 @@ export default function PanicHistory({ tab, setTab }) {
 
     useEffect(() => {
         if (tab == 'history') loadPanics();
-        else loadCanceledPanics();
+        else loadPanics("canceled");
     }, []);
 
     return <>

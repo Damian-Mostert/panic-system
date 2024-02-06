@@ -4,6 +4,7 @@ import { Popup, Button } from "../../../components";
 import axios from "axios";
 import { User } from "../../../modules";
 import { useEffect } from "react";
+import { LoginService } from "./services";
 
 export default function Login({ tab, setTab }) {
     const user = User();
@@ -22,12 +23,7 @@ export default function Login({ tab, setTab }) {
             background: "blur"
         });
 
-        axios.post(process.env.REACT_APP_API_URL + "/api/login", {
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value,
-        }, {
-            "Content-Type": "application/json",
-        }).then(async res => {
+        LoginService(document.getElementById("email").value, document.getElementById("password").value).then(async res => {
             if (res.status != 200) {
                 console.error("Error", res)
                 return await Popup.fire({

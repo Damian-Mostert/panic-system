@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Popup, Button } from "../../../components";
 import { Location, logout ,User} from "../../../modules";
 
-import axios from "axios";
+import { SendPanicService } from "./services";
 
 export default function SendPanic({tab,setTab}){
-    const user = User();
+    User();
 
     const location = Location();
+    
     const sendPanic = async () => {
         const panicType = document.getElementById("panic-type");
         const panicDetails = document.getElementById("panic-details");
@@ -37,57 +38,48 @@ export default function SendPanic({tab,setTab}){
             background: "blur"
         });
 
-        axios.post(process.env.REACT_APP_API_URL + "/api/send-panic",{
-            status: "active",
-            type: panicType.value,
-            details: panicDetails.value,
-            longitude: location.longitude,
-            latitude: location.latitude,
-        },{
-            headers:{
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            }
-        }).then(res => {
-            console.log(res.data)
-            if (res.status != 200) return Popup.fire({
-                icon: "unapproved",
-                text: "Request failed with status code "+res.status,
-                background: "blur",
-                timer: 5000,
-                canClose: true
-            });
+        SendPanicService("active",panicType.value,panicDetails.value,location.longitude,location.latitude)
+        .then(res => {
+           console.log(res.data)
+           if (res.status != 200) return Popup.fire({
+               icon: "unapproved",
+               text: "Request failed with status code " + res.status,
+               background: "blur",
+               timer: 5000,
+               canClose: true
+           });
 
-            if (res.data.status == "error") {
-                Popup.fire({
-                    icon: "unapproved",
-                    text: res.data.message,
-                    background: "blur",
-                    timer: 5000,
-                    canClose: true
-                });
-            } else {
-                panicType.value = "";
-                panicDetails.value = "";
-                Popup.fire({
-                    icon: "approved",
-                    text: res.data.message,
-                    background: "blur",
-                    timer: 5000,
-                    canClose: true
-                });
+           if (res.data.status == "error") {
+               Popup.fire({
+                   icon: "unapproved",
+                   text: res.data.message,
+                   background: "blur",
+                   timer: 5000,
+                   canClose: true
+               });
+           } else {
+               panicType.value = "";
+               panicDetails.value = "";
+               Popup.fire({
+                   icon: "approved",
+                   text: res.data.message,
+                   background: "blur",
+                   timer: 5000,
+                   canClose: true
+               });
 
-            }
-        }).catch(e=>{
-            console.error(e);
-            Popup.fire({
-                icon: "unapproved",
-                text: "Request failed" ,
-                background: "blur",
-                timer: 5000,
-                canClose: true
-            });
-        })
+           }
+       }).catch(e => {
+           console.error(e);
+           Popup.fire({
+               icon: "unapproved",
+               text: "Request failed",
+               background: "blur",
+               timer: 5000,
+               canClose: true
+           });
+       })
+        
     };
     return <>
         <div className='flex flex-wrap w-[600px] '>
